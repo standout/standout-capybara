@@ -1,29 +1,77 @@
-# Standout::Capybara
+# Standout Capybara
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/standout/capybara`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The purpose of this gem is to make it easier to setup Capybara drivers with sane defaults. It will default to `headless_chrome`, and if you use it with nanobox it will default to `nanobox_chrome`. But feel free to overwrite the environment variable CAPYBARA to use another capybara driver.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'standout-capybara'
+# Gemfile
+group :development, :test do
+  gem "capybara"
+  gem "standout-capybara", require: false
+end
+
+# test_helper.rb, spec_helper.rb or rails_helper.rb etc
+require 'capybara/rails'
+require 'standout/capybara/setup'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install standout-capybara
-
 ## Usage
 
-TODO: Write usage instructions here
+### Headless chrome
 
+Just run your test command, the `headless_chrome` is the default driver
+
+
+### Chrome
+
+Run the test command with `CAPYBARA=chrome`.
+
+Example:
+
+```bash
+$ CAPYBARA=chrome rake
+```
+
+### Nanobox chrome
+
+Add a local only component of standalone chrome to your `boxfile.yml`
+
+```yml
+data.chrome:
+  image: selenium/standalone-chrome
+  local_only: true
+```
+
+Now you can run the test as usual.
+
+Example:
+
+```bash
+$ nanobox run rake
+```
+
+### Available drivers
+
+Override the driver using the environment variable `CAPYBARA`.
+
+Example:
+
+```bash
+CAPYBARA=[driver name] test-command
+```
+
+| Driver name      | Description |
+|:-----------------|:------------|
+| chrome           | Regular chrome driver that will use a visual browser window. |
+| headless_chrome  | Headless chrome driver. The default driver. |
+| nanobox_chrome  | Default driver when inside Nanobox. |
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
