@@ -11,10 +11,11 @@ module Standout
 
         def self.register
           ::Capybara.register_driver driver_name do |driver|
+            capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chromeOptions: { args: %w[headless disable-gpu], w3c: false } )
             chrome_host = ENV["CHROME_HOST"] || ENV["DATA_CHROME_HOST"]
             ::Capybara::Selenium::Driver.new(driver,
                                            browser: :remote,
-                                           desired_capabilities: :chrome,
+                                           desired_capabilities: capabilities,
                                            url: "http://#{chrome_host}:4444/wd/hub")
           end
           super
