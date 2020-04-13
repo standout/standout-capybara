@@ -57,6 +57,16 @@ Example:
 $ nanobox run rake
 ```
 
+### Options
+
+Options that you can override using environment variables.
+
+| Environment variable | Description |
+|:-----------------|:------------|
+| `CAPYBARA`  | Override the driver |
+| `CAPYBARA_WAIT_TIME`  | Override default wait time of capybara |
+
+
 ### Available drivers
 
 Override the driver using the environment variable `CAPYBARA`.

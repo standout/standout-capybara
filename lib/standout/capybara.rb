@@ -32,9 +32,9 @@ module Standout
       end
 
       if ::Capybara.respond_to? :default_max_wait_time
-        ::Capybara.default_max_wait_time = 30
+        ::Capybara.default_max_wait_time = ENV.fetch('CAPYBARA_WAIT_TIME') { 30 }
       else
-        ::Capybara.default_wait_time = 30
+        ::Capybara.default_wait_time = ENV.fetch('CAPYBARA_WAIT_TIME') { 30 }
       end
     end
 
