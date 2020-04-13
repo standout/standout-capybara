@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         version: 2.6.x
+    - name: Set up environment
+      run: |
+        gem install bundler
+        bundle install
     - name: Test
       run: rake
     - name: Publish to Rubygems
