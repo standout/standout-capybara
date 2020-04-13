@@ -2,6 +2,6 @@
 
 module Standout
   module Capybara
-    VERSION = '1.0.5'
+    VERSION = '1.0.6'
   end
 end
