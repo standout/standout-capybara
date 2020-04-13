@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    standout-capybara (1.0.3)
+    standout-capybara (1.0.5)
       capybara
       capybara-screenshot
       chromedriver-helper
