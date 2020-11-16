@@ -81,7 +81,9 @@ CAPYBARA=[driver name] test-command
 |:-----------------|:------------|
 | chrome           | Regular chrome driver that will use a visual browser window. |
 | headless_chrome  | Headless chrome driver. The default driver. |
-| nanobox_chrome  | Default driver when inside Nanobox. |
+| nanobox_chrome   | Default driver when inside Nanobox. |
+| remote_chrome    | Default driver when `ENV['HUB_URL']` is defined. |
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run

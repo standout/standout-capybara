@@ -9,23 +9,23 @@ require 'standout/capybara/drivers/base'
 require 'standout/capybara/drivers/chrome'
 require 'standout/capybara/drivers/nanobox_chrome'
 require 'standout/capybara/drivers/headless_chrome'
+require 'standout/capybara/drivers/remote_chrome'
 
 module Standout
   module Capybara
-    def self.setup_driver
-      driver_name = ENV['CAPYBARA']
-      is_using_nanobox = `whoami`.chomp == 'gonano'
-      fallback_driver = is_using_nanobox ? :nanobox_chrome : :headless_chrome
-      driver_name ||= fallback_driver
-      driver_name = driver_name.to_sym
+    class Error < StandardError; end
 
-      case driver_name
+    def self.setup_driver
+      case (ENV['CAPYBARA'] || fallback_driver).to_sym
       when :chrome
         Standout::Capybara::Drivers::Chrome.register
         Standout::Capybara::Drivers::Chrome.use!
       when :nanobox_chrome
         Standout::Capybara::Drivers::NanoboxChrome.register
         Standout::Capybara::Drivers::NanoboxChrome.use!
+      when :remote_chrome
+        Standout::Capybara::Drivers::RemoteChrome.register
+        Standout::Capybara::Drivers::RemoteChrome.use!
       else
         Standout::Capybara::Drivers::HeadlessChrome.register
         Standout::Capybara::Drivers::HeadlessChrome.use!
@@ -38,6 +38,19 @@ module Standout
       end
     end
 
-    class Error < StandardError; end
+    def self.fallback_driver
+      return :nanobox_chrome if nanobox?
+      return :remote_chrome if hub_url?
+
+      :headless_chrome
+    end
+
+    def self.nanobox?
+      `whoami`.chomp == 'gonano'
+    end
+
+    def self.hub_url?
+      !ENV['HUB_URL'].nil?
+    end
   end
 end
